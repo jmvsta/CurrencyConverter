@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Конвертер</title>
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css} "/>
+    </head>
+    <body>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+
+        <form action="#" th:action="@{/converter/}" th:object="${converter}" method="post" >
+            <div>
+                <select class="form-control" id="dropCurrency1" th:field="*{currAId}">
+                    <option value="">Выберите валюту</option>
+                    <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                </select>
+                <select class="form-control" id="dropCurrency2" th:field="*{currBId}">
+                    <option value="">Выберите валюту</option>
+                    <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                </select>
+            </div>
+            <div>
+                <label><input type="text" id="dropCurrency1Val" name="dropCurrency1Val" th:field="*{valA}"/> </label>
+                <label><input type="text" id="dropCurrency2Val" name="dropCurrency2Val" th:value="${result}"/> </label>
+            </div>
+            <div><input type="submit" value="Конвертировать"/></div>
+<!--            <select th:field="*{rows[__${currencies}__].variety}">-->
+<!--                <option th:each="var : ${currencies}"-->
+<!--                        th:value="${var.value}"-->
+<!--                        th:text="${var.name}">Выберите валюту</option>-->
+<!--            </select>-->
+<!--            <input type="text" th:field="*{rows[__${rowStat.index}__].seedsPerCell}" />-->
+        </form>
+        <form action="#" th:action="@{/converter/history}" method="post">
+            <div><input type="submit" value="История"/></div>
+        </form>
+
+    </body>
+</html>
