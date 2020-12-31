@@ -1,12 +1,8 @@
 package com.jmvsta.service;
 
 import com.jmvsta.dto.CurrenciesWrapperDto;
-import com.jmvsta.dto.CurrencyConveter;
-import com.jmvsta.dto.CurrencyDto;
-import com.jmvsta.entity.Currency;
+import com.jmvsta.dto.ValuteDto;
 import com.jmvsta.repository.CurrencyRepository;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -41,7 +37,7 @@ public class CurrencySchedulerService {
 
     private List<HttpMessageConverter<?>> getMessageConverters() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setClassesToBeBound(CurrenciesWrapperDto.class, CurrencyDto.class);
+        marshaller.setClassesToBeBound(CurrenciesWrapperDto.class, ValuteDto.class);
         MarshallingHttpMessageConverter marshallingConverter =
                 new MarshallingHttpMessageConverter(marshaller);
 
@@ -50,8 +46,8 @@ public class CurrencySchedulerService {
         return converters;
     }
 
-    public List<CurrencyDto> getCurrencies() {
-
+    @Transactional
+    public List<ValuteDto> getValutes() {
         ResponseEntity<CurrenciesWrapperDto> response =
                 restTemplate.getForEntity(url, CurrenciesWrapperDto.class);
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -63,20 +59,5 @@ public class CurrencySchedulerService {
         return response.getBody().getValute();
     }
 
-    @Transactional
-    public void updateCurrencies(List<CurrencyDto> currencies) {
-        for (CurrencyDto currencyDto : currencies) {
-            Currency currency = currencyRepository.findByCharCode(currencyDto.getCharCode());
-            BigDecimal value = new BigDecimal(currencyDto.getValue().replace(",", "."))
-                    .divide(new BigDecimal(currencyDto.getNominal()), 4, RoundingMode.CEILING);
-            if (currency == null) {
-                currencyRepository.saveAndFlush(CurrencyConveter.toCurrency(currencyDto));
-                log.info("added new currency");
-            } else if (!currency.getValue().equals(value)) {
-                currency.setValue(value);
-                currencyRepository.saveAndFlush(currency);
-                log.info("updated currency");
-            }
-        }
-    }
+
 }

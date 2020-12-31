@@ -1,18 +1,21 @@
 package com.jmvsta.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 public class ConverterDto {
 
-    private Long currAId;
+    private String sourceCurrId;
 
-    private Long currBId;
+    private String targetCurrId;
 
-    private BigDecimal valA;
+    private BigDecimal sourceValue;
 
-    private String date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date date;
 }

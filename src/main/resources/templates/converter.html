@@ -14,17 +14,17 @@
 
         <form action="#" th:action="@{/converter/}" th:object="${converter}" method="post" >
             <div>
-                <select class="form-control" id="dropCurrency1" th:field="*{currAId}">
+                <select class="form-control input-sm" id="dropCurrency1" th:field="*{sourceCurrId}">
                     <option value="">Выберите валюту</option>
-                    <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                    <option th:each="currency : ${currencies}" th:value="${currency.valuteId}" th:text="${currency.name}"></option>
                 </select>
-                <select class="form-control" id="dropCurrency2" th:field="*{currBId}">
+                <select class="form-control input-sm" id="dropCurrency2" th:field="*{targetCurrId}">
                     <option value="">Выберите валюту</option>
-                    <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                    <option th:each="currency : ${currencies}" th:value="${currency.valuteId}" th:text="${currency.name}"></option>
                 </select>
             </div>
             <div>
-                <label><input type="text" id="dropCurrency1Val" name="dropCurrency1Val" th:field="*{valA}"/> </label>
+                <label><input type="text" id="dropCurrency1Val" name="dropCurrency1Val" th:field="*{sourceValue}"/> </label>
                 <label><input type="text" id="dropCurrency2Val" name="dropCurrency2Val" th:value="${result}"/> </label>
             </div>
             <div><input type="submit" value="Конвертировать"/></div>

@@ -21,6 +21,6 @@ public class CurrenciesWrapperDto {
     private String date;
 
     @XmlElement(name="Valute")
-    private List<CurrencyDto> valute;
+    private List<ValuteDto> valute;
 
 }

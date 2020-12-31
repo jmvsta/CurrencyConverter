@@ -11,21 +11,35 @@
         <div th:if="${param.logout}">
             Вы вышли из л.к.
         </div>
-        <div>
-            <label>История</label>
-        </div>
-        <form action="#" th:action="@{/converter/}" th:object="${converter}" method="post">
+        <div><label>История</label></div>
+        <form action="#" th:action="@{/converter/history}" th:object="${converter}" method="post">
             <input type="date" th:field="*{date}" id="dateStarted"/>
-            <select class="form-control" id="dropCurrency1" th:field="*{currAId}">
+            <select class="form-control input-sm" id="dropCurrency3" th:field="*{sourceCurrId}">
                 <option value="">Выберите валюту</option>
-                <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                <option th:each="currency : ${currencies}" th:value="${currency.valuteId}" th:text="${currency.name}"></option>
             </select>
-            <select class="form-control" id="dropCurrency2" th:field="*{currBId}">
+            <select class="form-control input-sm"id="dropCurrency4" th:field="*{targetCurrId}">
                 <option value="">Выберите валюту</option>
-                <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.name}"></option>
+                <option th:each="currency : ${currencies}" th:value="${currency.valuteId}" th:text="${currency.name}"></option>
             </select>
             <div><input type="submit" value="Поиск"/></div>
         </form>
+        <table>
+            <tr>
+                <th>Исходная валюта</th>
+                <th>Целевая валюта</th>
+                <th>Исходная сумма</th>
+                <th>Получаемая сумма</th>
+                <th>Дата</th>
+            </tr>
+            <tr th:each="h : ${histories}">
+                <td th:text="${h.sourceCurrency.charCode + '(' + h.sourceCurrency.name + ')'}"></td>
+                <td th:text="${h.targetCurrency.charCode + '(' + h.targetCurrency.name + ')'}"></td>
+                <td th:text="${h.sourceSum}"></td>
+                <td th:text="${h.targetSum}"></td>
+                <td th:text="${h.date}"></td>
+            </tr>
+        </table>
         <form action="#" th:action="@{/converter/}" method="post">
             <div><input type="submit" value="Конвертер"/></div>
         </form>

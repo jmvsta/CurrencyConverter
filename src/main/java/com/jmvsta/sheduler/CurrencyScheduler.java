@@ -1,8 +1,10 @@
 package com.jmvsta.sheduler;
 
-import com.jmvsta.dto.CurrencyDto;
+import com.jmvsta.dto.ValuteDto;
 import com.jmvsta.service.CurrencySchedulerService;
-import java.text.SimpleDateFormat;
+import com.jmvsta.service.CurrencyService;
+import com.jmvsta.service.ExchangeRateService;
+import java.text.ParseException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +20,16 @@ public class CurrencyScheduler {
 
     private final CurrencySchedulerService currencySchedulerService;
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+    private final CurrencyService currencyService;
 
-    @Scheduled(fixedRate = 60000)
-    public void renewCurrencies() {
-        List<CurrencyDto> currencyDtos = currencySchedulerService.getCurrencies();
-        currencySchedulerService.updateCurrencies(currencyDtos);
+    private final ExchangeRateService exchangeRateService;
+
+//    starts at 00:00 everyday
+    @Scheduled(cron = "0 0 0 * * *")
+//    @Scheduled(fixedRate = 1_440_000)
+    public void renewCurrencies() throws ParseException {
+        List<ValuteDto> valuteDtos = currencySchedulerService.getValutes();
+        currencyService.updateCurrencies(valuteDtos);
+        exchangeRateService.updateExchangeRates(valuteDtos);
     }
 }

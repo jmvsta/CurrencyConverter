@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @XmlRootElement(name="Valute")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CurrencyDto {
+public class ValuteDto {
 
     @XmlAttribute(name = "ID")
     private String id;
